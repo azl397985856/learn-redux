@@ -45,7 +45,12 @@ Elm的核心理念是使用Model构建应用，也就是说Model是应用的核�
 
 [更多关于elm的介绍](https://github.com/evancz/elm-architecture-tutorial/)
 
-了解了上面的东西，你会发现其实redux的任务就是管理数据，它精妙的设计我们在后面进行解读。
+了解了上面的东西，你会发现其实redux的任务就是管理数据。redux的数据流可以用下面的图来标示：
+
+
+![redux](https://github.com/azl397985856/learn-redux/blob/master/redux.png)
+
+它精妙的设计我们在后面进行解读。
 ## 最小化实现REDUX
 其实写一个redux并不困难。redux源码也就区区200行左右。
 里面大量使用高阶函数，闭包，函数组合等知识。让代码看起来更加简短，结构更加清晰。
