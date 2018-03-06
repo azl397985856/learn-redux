@@ -172,6 +172,21 @@ reducer则没有这样的一个数组。
 更确切地说，reducer累计的`时间`上的变化，reduce是累计`空间`上的变化。
 
 如何理解reducer是累计`时间`上的变化？
+
+我们每次通过调用dispatch(action)的时候，都会调用reducer，然后将reducer的返回值去更新store.state。
+
+每次dispatch的过程，其实就是在空间上push(action)的过程，类似这样：
+
+```js
+[action1, action2, action3].reduce((state, action) => {
+    const nextState = {};
+    // xxx
+    return nextState;
+}, initialState)
+
+```
+
+因此说，reducer其实是时间上的累计，是基于时空的操作。
 ### middlewares
 关于middleware的概念我们不多介绍，
 感兴趣可以访问[这里](https://redux.js.org/advanced/middleware)查看更多信息。
