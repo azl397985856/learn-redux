@@ -130,6 +130,9 @@ store.dispatch({ type: 'DECREMENT' })
 // 1
 ```
 
+可以看出我们已经完成了redux的最基本的功能了。
+如果需要更新view，就根据我们暴漏的subscribe
+
 为了方便各个阶段的人员能够看懂，我省略了applyMiddleware的实现，但是不要担心，我会在下面redux核心思想章节进行解读。
 
 ## REDUX核心思想
