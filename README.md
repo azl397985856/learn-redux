@@ -129,10 +129,7 @@ store.dispatch({ type: 'INCREMENT' })
 store.dispatch({ type: 'DECREMENT' })
 // 1
 ```
-
-可以看出我们已经完成了redux的最基本的功能了。
-如果需要更新view，就根据我们暴漏的subscribe去更新就好了，这也就解释了
-redux并不是专门用于react的，以及为什么要有react-redux这样的库存在。
+可以看出我们已经完成了redux的最基本的功能了。 如果需要更新view，就根据我们暴漏的subscribe去更新就好了，这也就解释了 redux并不是专门用于react的，以及为什么要有react-redux这样的库存在。
 
 为了方便各个阶段的人员能够看懂，我省略了applyMiddleware的实现，但是不要担心，我会在下面redux核心思想章节进行解读。
 
@@ -141,7 +138,13 @@ redux的核心思想出了刚才提到的那些之外。
 个人认为还有两个东西需要特别注意。
 一个是reducer, 另一个是middlewares
 ### reducer 和 reduce
-reducer可以说是redux的精髓所在。我们先来看下它。reducer和reduce名字非常像，这是巧合吗？
+reducer可以说是redux的精髓所在。我们先来看下它。reducer**被要求**是一个**纯函数**。 
+- 被要求很关键，因为reducer并不是定义在redux中的一个东西。而是用户传进来的一个方法。
+- 纯函数也很关键，reducer应该是一个纯函数，这样state才可预测(这里应证了我开头提到的Redux is a predictable state container for JavaScript apps.)。
+
+日常工作我们也会用到reduce函数，它是一个高阶函数。reduce一直是计算机领域中一个非常重要的概念。
+
+reducer和reduce名字非常像，这是巧合吗？
 
 我们先来看下reducer的函数签名：
 
@@ -167,6 +170,8 @@ fucntion reducer(state, action) {
 reducer则没有这样的一个数组。
 
 更确切地说，reducer累计的`时间`上的变化，reduce是累计`空间`上的变化。
+
+如何理解reducer是累计`时间`上的变化？
 ### middlewares
 关于middleware的概念我们不多介绍，
 感兴趣可以访问[这里](https://redux.js.org/advanced/middleware)查看更多信息。
@@ -233,3 +238,9 @@ let store = createStore(
   applyMiddleware(logger, dispatchAndLog)
 )
 ```
+
+上面就是redux关于middleware的源码，非常简单。通过compose middlewares和dispatch，使得开发者在dispatch的时候能够顺序执行各个中间件。
+
+基于此出现了很多非常优秀的第三方redux中间价，比如redux-dev-tool, redux-log, redux-promise 等等。
+
+这种解决问题的思想也可以应用到我们平时写代码的过程中。
