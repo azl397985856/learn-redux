@@ -280,4 +280,6 @@ let store = createStore(
 这种解决问题的思想也可以应用到我们平时写代码的过程中。
 
 ## 总结
+本篇文章主要讲解了redux是什么，它主要做了什么。然后通过不到20行代码实现了一个最小化的redux。最后深入讲解了redux的核心设计reducer和middlewares。 
+
 redux还有一些非常经典的学习资源，这里推荐redux作者本人的[getting started with redux](https://egghead.io/courses/getting-started-with-redux)和[You Might Not Need Redux](https://medium.com/@dan_abramov/you-might-not-need-redux-be46360cf367)。学习它对于你理解redux以及如何使用redux管理应用状态是非常有帮助的。
