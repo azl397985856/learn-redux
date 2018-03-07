@@ -273,11 +273,25 @@ let store = createStore(
 )
 ```
 
-上面就是redux关于middleware的源码，非常简单。通过compose middlewares和dispatch，使得开发者在dispatch的时候能够顺序执行各个中间件。
+上面就是redux关于middleware的源码，非常简洁。但是想要完全读懂还是要花费点心思的。 首先redux通过createStore生成了一个原始的store(没有被enhance)，然后最后将原始store的dispatch改写了，在调用原生的reducer之间,插入中间件逻辑(中间件链会顺序依次执行). 代码如下：
 
-基于此出现了很多非常优秀的第三方redux中间价，比如redux-dev-tool, redux-log, redux-promise 等等。
+```js function applyMiddleware(...middlewares) { return createStore => (...args) => { const store = createStore(...args) // let dispatch = xxxxx; return { ...store, dispatch } } } 
 
-这种解决问题的思想也可以应用到我们平时写代码的过程中。
+```
+
+然后我们将用户传入的middlewares顺序执行，这里借助了compose，compose是函数式编程中非常重要的一个概念,他的作用就是将多个函数组合成一个函数，compose(f, g, h)()最终生成的大概是这样： 
+
+```
+js function(...args) { f(g(h(...args))) } 
+
+```
+
+因此chain大概长这个样子： 
+
+```js
+chain = [ function middleware1(next) { // 内部可以通过闭包访问到getState和dispath }, function middleware2(next) { // 内部可以通过闭包访问到getState和dispath }, ... ]
+```
+有了上面`compose`的概念之后，我们会发现每一個middleware的input 都是一个参数next为的function，第一个中间件访问到的next其实就是原生store的dispatch。代码为证： `dispatch = compose(...chain)(store.dispatch)`。从第二个中间件开始，next其实就是上一个中间件返回的 action => retureValue 。 有没有发现这个函数签名就是dispatch的函数签名。 output是一個参数为action的function, 返回的function签名为 action => retureValue 用來作为下一个middleware的next。这样middleware就可以选择性地调用下一個 middleware(next)。 社区有非常多的redux middleware，最为经典的dan本人写的redux thunk，核心代码只有`两行`, 第一次看真的震惊了。从这里也可以看出redux 的厉害之处。 基于redux的优秀设计，社区中出现了很多非常优秀的第三方redux中间价，比如redux-dev-tool, redux-log, redux-promise 等等，有机会我会专门出一个redux thunk的解析。
 
 ## 总结
 本篇文章主要讲解了redux是什么，它主要做了什么。然后通过不到20行代码实现了一个最小化的redux。最后深入讲解了redux的核心设计reducer和middlewares。 
